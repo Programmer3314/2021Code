@@ -1,0 +1,178 @@
+Bookmark - pre-competition week one 
+
+TODOs
+
+Lag - Probably in commented code
+Ball 2 misses - check belt speed
+No need for Gyro 0
+Hood up only vibrates prior to shoot sequence 
+Lines on Driver Cam for alignment with lower target and other stuff
+Eject the Intake and yank it back in.
+- DONE - Fix three ball auto that drives back
+Make forward not negative
+Create firing solution class to pass into shootAll
+
+when5thball,stopintakeroller
+
+Logging
+Image capture on pi's 
+
+
+Please init ratchet to engaged position in auto init and teleop init. 
+Please add timer (count cycles) and turn on vertical lights/rumble driver with 40 seconds left in match
+Please create ThreeBallAuto that drives back.
+Please read other todo's in "problems" screen.
+
+- DONE - Fix Target Align Button - probably fixed, must test
+- DONE - Take in 5th Ball Sitting on Indexer - maybe fixed, must test
+- DONE - Shooter not spinning down after timer - hopefully fixed, must test
+- DONE - Climber stopping by itself - not sure why... I made other changes though
+- DONE - Init isForward and driverCamNum in both auto and periodic init - done, please check
+- DONE - >>>Please add a shooter abort, I don't see one. 
+
+
+
+
+
+***Actions***
+Control Panel | revolutions 3 - 5 | color sensor | Camera
+Climb | mini SIM | enocder and switch || 2 switches | 2 Lasers - Bar is level when it breaks both Sensors
+shooter | control convey belt | motor brush | motor controller | encoder | 
+ball Queuing | mini sim | 
+
+
+***Motors & Encoders***
+1 Bag Motors | Turn Table  - Rotate Hood | Vera planetary encoder
+4 Falcons | Drive Train
+2 Neos | Shooter
+1 Mini Sim | Brushed Motor | Intake
+1/2 Motor | Intake Track
+1 Mini Sim | Move on Climber Bar
+1 Bag Motor | Control Panel | 
+1 <= ??? motor(s) | Queuing Balls
+
+***Sensors***
+>= 2 Pairs of Sensors | Queuing Balls | 1 before the Shooter | A few more along the tracking
+
+Analog Sensors: We have 8 total, but there might be a problem with 1 (due to NAVX)
+We need to manage this list as we move forward. hopefully we'll be able to move the 
+ball sensors to digital inputs. 
+0 - Front Right Ultrasonic - trench alignment
+1 - Floor Ultrasonic sensor - distance to ground
+2 - Ball Sensor for intake - Should be digital
+3 - Ball Sensor for queuing - Should be digital
+4 - Ball Sensor for queuing - Should be digital
+5 - Ball Sensor for queuing - Should be digital
+6 - Ball Sensor for queuing - Should be digital
+7 - Lookup sensor to detect going under Control panel
+
+***Pneumatics***
+1 Small Piston | Control Panel Manipulator
+
+*****Ball Intake*****
+Mini SIM
+
+*****Ball Queuing*****
+????? Motors = using Conveyor belt to move balls in robot
+
+
+*************************Controls*********************************************
+******Operator*********
+toggle the piston on bag motor on the Control Panel
+automative color selector
+four spin on the Control Panel
+abort
+manual control on the bag motor
+
+open up Hood
+adjust hood angle (3 positions?)(point blank)(distance)
+manual hood movement
+shoot ball
+spin up shooter
+abort shoot 
+
+turn ball queue tracking
+reverse ball queue track
+preset angle/hood?
+feed ball
+
+pull out/pull in intake
+manual pull out/pull in
+intake
+eject/reverse intake 
+
+elevator
+manual elevator
+winch it down
+release 
+creep on bar + stop creep
+abort climb
+buddy climb (hopefully)
+    release
+    grab
+    
+auto selection
+field position
+
+driver
+throttle
+turn
+switch cameras/switch front and back
+
+ball targetting
+powerport targetting
+gyrolock
+run the trench
+
+button that saves angle for gyrolock 0 
+
+switches on button box determine specific control sets
+
+reset gyro button
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+***Driving Mode***
+    {Motor Encoder, Gamepad Arcade Style,}
+    Chase ball{Camera turn by vision, forward from human control}
+    Drive along trench{Driver controlled speed, ultrasonic sensor, gyro, color sensor, Balls in auto, camera to get angle of trench line on side}
+    Target to high target tape{Camera to align with center of tape}
+    Align to climb{Gyro to be perpindicular to bar}
+    Line up from Control Panel{Weight sensor to detect when hood rips off and back up 2 feet}
+
+***Other Things***
+    Pickup ball{Sensor for where the ball is in the intake, Motor ecoder, }
+    Shoot{Adjust hood, Adjust motor speed (range) 
+    Sensors{Motor Encoder, Prox. Sensor(s) for up and down pos}}
+    Climb{Motor Encoder, Index of climber, Sensor for bar Leveling, Sensor for off ground}
+    Manage queueing balls (to shooter)
+    Spin Control Panel{Sensor for position of spinner motor, Motor Encoder, Color sensor(s), Camera?,  }
+    Move along climbing bar
+    Control shooter hood
+    Driver camera Control{Switching camera, Draw on camera that is chosen }
+    
+
+Tasks:
+
+-Clean up TODOs - They show up in the "Problems window" below.
+-Clean up Warnings
+-There are a bunch of is... variables set based on which chassis the code is running on.
+But these variables are not fully used. For example, isShooter is set, but the shooter 
+update is commented out. On the other hand, the controlPanel "new" statement is conditioned
+but the .update isn't. Please fix all of these. You may also want to change the boolean names 
+to has... - if(hasShooter)... 
+-Gyro Drive: rotate to specified angle (most often 0 degrees), and let the driver control speed. 
+This is meant to be used to drive the trench. 
+-Gyro Distance Drive: rotate to specified angle and drive for a specified distance. 
+This is meant for autonomous. 
