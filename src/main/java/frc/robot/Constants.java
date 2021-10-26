@@ -72,7 +72,7 @@ public class Constants{
     //Gyro
     public static final double gyroTolerance = 1.0;//2.0;//0.5;
     public static final double gyrokP = 0.025;//0.0225;
-    public static final double gyrokD = 0.0;//0;//0.04;
+    public static final double gyrokD = 0.04;//0;//0.04;
     public static final double gyroMinCorrection = 0.1;
 
     //Ball Chasing

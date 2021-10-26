@@ -285,7 +285,8 @@ public class Robot extends MyRobot {
 
     if(HumanInput.closeShot){
       shooter.setTargetShooterRPMTolerance(50);//10);
-      shooter.setHoodSetpoint(-800);//0
+      shooter.setHoodSetpoint(0);//0
+      //shooter.setHoodSetpoint(-800);//0
       shooter.setTargetShooterRPM(3000);//2150
       shooter.prepareShooter();
     //targetShooterRPM = 2100
