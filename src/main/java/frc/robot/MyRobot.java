@@ -79,12 +79,12 @@ public abstract class MyRobot extends AllRobots {
             isFalcon = true;
             hasShooter = true;
             isTalonFXTest = false;
-            hasControlPanel = true;
+            hasControlPanel = false;
         } else {
             isFalcon = false;
             hasShooter = true;
             isTalonFXTest = true;
-            hasControlPanel = true;
+            hasControlPanel = false;
         }
 
         if (isFalcon) {
