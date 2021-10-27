@@ -9,7 +9,6 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.DriveController.DriveState;
 import frc.robot.DriveController.MoveParameters;

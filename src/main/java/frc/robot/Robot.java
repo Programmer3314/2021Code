@@ -34,16 +34,16 @@ public class Robot extends MyRobot {
 
     ballTargetTable = ntInst.getTable("Ball Target");
     portalTapeTargetTable = ntInst.getTable("Retroreflective Tape Target");
-    
+
     // Ensure that switched camera entry exists
     ntInst.getEntry("chooseCam").setNumber(0);
     ntInst.getEntry("PumpkinSwitch").setNumber(0);
-    
+
     driveController = new DriveController(drivetrain, ballTargetTable, portalTapeTargetTable);
 
     if (hasShooter) {
-      shooter = new Shooter(CANMcshooterLeft, CANMcshooterRight, CANMcBallQueuing, 
-          CANMcHood, CANMcIndexer, CANMcIntake);
+      shooter = new Shooter(CANMcshooterLeft, CANMcshooterRight, CANMcBallQueuing, CANMcHood, CANMcIndexer,
+          CANMcIntake);
     }
 
     shooter.setTargetShooterRPMTolerance(Constants.shooterRPMTolerance);
@@ -60,11 +60,12 @@ public class Robot extends MyRobot {
     trenchAlignment = new ControlPanelAlignment();
 
     // targetShooterRPM = SmartDashboard.getNumber("Shooter RPM Desired", 0);
-    // shooterRPMTolerance = SmartDashboard.getNumber("Shooter RPM Tolerance Desired", 0);
+    // shooterRPMTolerance = SmartDashboard.getNumber("Shooter RPM Tolerance
+    // Desired", 0);
     // SmartDashboard.putNumber("Shooter RPM Desired", targetShooterRPM);
     SmartDashboard.putNumber("Shooter RPM Tolerance Desired", shooter.getTargetShooterRPMTolerance());
 
-    queuingBeltSpeed = Constants.queuingBeltSpeed; //SmartDashboard.getNumber("Queuing Belt Speed", 0.5);
+    queuingBeltSpeed = Constants.queuingBeltSpeed; // SmartDashboard.getNumber("Queuing Belt Speed", 0.5);
     SmartDashboard.putNumber("Queuing Belt Speed", queuingBeltSpeed);
 
     Solenoids.startCompressor();
@@ -76,7 +77,7 @@ public class Robot extends MyRobot {
     shooter.autoCounter = 3;
     HumanInput.update();
 
-    // set auto 
+    // set auto
     auto1 = null;
     if (HumanInput.autoNumber == 3) {
       auto1 = new ThreeBallAuto(shooter);
@@ -86,7 +87,7 @@ public class Robot extends MyRobot {
       auto1 = new ThreeBallAutoBack(shooter);
     }
 
-    if (HumanInput.autoNumber == 5){
+    if (HumanInput.autoNumber == 5) {
       auto1 = new FiveBallAutoTrench();
     }
 
@@ -94,24 +95,23 @@ public class Robot extends MyRobot {
       auto1 = new SixBallAuto();
     }
 
-    if(HumanInput.autoNumber == 7) {
+    if (HumanInput.autoNumber == 7) {
       auto1 = new BounceAuto();
     }
 
-    if(HumanInput.autoNumber == 8){
+    if (HumanInput.autoNumber == 8) {
       auto1 = new BarrelRunAuto();
     }
 
-    if(HumanInput.autoNumber == 9){
+    if (HumanInput.autoNumber == 9) {
       auto1 = new GalacticSearchAuto();
     }
     // if(HumanInput.autoNumber == 9){
-    //   auto1 = new SlalomAuto();
+    // auto1 = new SlalomAuto();
     // }
 
     mP = driveController.new MoveParameters();
     navx.reset();
-    
 
     SmartDashboard.putNumber("Auto Number", HumanInput.autoNumber);
 
@@ -119,7 +119,7 @@ public class Robot extends MyRobot {
     shooter.LogHeader();
     mP.LogHeader();
     driveController.LogHeader();
-    if(auto1 != null){
+    if (auto1 != null) {
       auto1.LogHeader();
     }
     Solenoids.LogHeader();
@@ -137,13 +137,9 @@ public class Robot extends MyRobot {
     Solenoids.CPManipulatorDown.set(true);
     Solenoids.CPManipulatorUp.set(false);
 
-    
-
-    
-
     shooter.resetState();
 
-    if(auto1 != null){
+    if (auto1 != null) {
       auto1.reset();
     }
 
@@ -151,11 +147,10 @@ public class Robot extends MyRobot {
 
     shooter.setHoodSetpoint(0.0);
 
-    if(auto1 != null){
+    if (auto1 != null) {
       auto1.activate();
     }
 
-    
     isForward = true;
     driverCamNum = 1;
 
@@ -171,18 +166,18 @@ public class Robot extends MyRobot {
     shooter.LogData();
     mP.LogData();
     driveController.LogData();
-    if(auto1 != null){
+    if (auto1 != null) {
       auto1.LogData();
     }
     Solenoids.LogData();
     LogData();
 
-    if(auto1 != null){
+    if (auto1 != null) {
       auto1.update(mP);
     }
 
     SmartDashboard.putNumber("Vertical Angle", vertAngle);
-    
+
     shooter.update(mP);
     driveController.update(mP);
   }
@@ -226,23 +221,23 @@ public class Robot extends MyRobot {
 
     // Already done in Robot Init...
     // if (hasControlPanel) {
-    //    controlPanel = new ControlPanel(CANMcctrlPanel);
+    // controlPanel = new ControlPanel(CANMcctrlPanel);
     // }
 
     mP.currentState = DriveController.DriveState.MANUAL;
 
     if (HumanInput.autoNumber == 3) {
-       auto1 = new ThreeBallAuto(shooter);
+      auto1 = new ThreeBallAuto(shooter);
     }
 
     if (HumanInput.autoNumber == 4) {
       auto1 = new ThreeBallAutoBack(shooter);
-   }
+    }
 
     trenchAlignment.resetState();
     shooter.resetState();
 
-    if(auto1 != null){
+    if (auto1 != null) {
       auto1.reset();
     }
 
@@ -263,8 +258,8 @@ public class Robot extends MyRobot {
     // LEDCounter++;
 
     // if(LEDCounter >= 4750){
-    //   Solenoids.backLED(true);
-    //   Solenoids.frontLED(true);
+    // Solenoids.backLED(true);
+    // Solenoids.frontLED(true);
     // }
     vertAngle = -portalTapeTargetTable.getEntry("Vertical Angle").getDouble(-100);
     vertAngle += 8;
@@ -281,77 +276,74 @@ public class Robot extends MyRobot {
     driveController.LogData();
     Solenoids.LogData();
     LogData();
-    
 
-    if(HumanInput.closeShot){
-      shooter.setTargetShooterRPMTolerance(50);//10);
-      shooter.setHoodSetpoint(0);//0
-      //shooter.setHoodSetpoint(-800);//0
-      shooter.setTargetShooterRPM(3000);//2150
+    if (HumanInput.closeShot) {
+      shooter.setTargetShooterRPMTolerance(50);// 10);
+      shooter.setHoodSetpoint(0);// 0
+      // shooter.setHoodSetpoint(-800);//0
+      shooter.setTargetShooterRPM(3000);// 2150
       shooter.prepareShooter();
-    //targetShooterRPM = 2100
+      // targetShooterRPM = 2100
     }
 
-    if(HumanInput.lineShot){
-      shooter.setTargetShooterRPMTolerance(50);//10);//5);
-      shooter.setHoodSetpoint(-1360);//-1355);//-1350);//-1310);//-1350);//-1400);
-      shooter.setTargetShooterRPM(3314);//3500);
+    if (HumanInput.lineShot) {
+      shooter.setTargetShooterRPMTolerance(50);// 10);//5);
+      shooter.setHoodSetpoint(-1360);// -1355);//-1350);//-1310);//-1350);//-1400);
+      shooter.setTargetShooterRPM(3314);// 3500);
       shooter.prepareShooter();
-      //targetShooterRPM = 3600;
+      // targetShooterRPM = 3600;
 
     }
 
-    if(HumanInput.trenchShot){
-      shooter.setTargetShooterRPMTolerance(50);//10);//5);
-      shooter.setHoodSetpoint(-1565);//-1575);//1500//-1350); //-1475);
+    if (HumanInput.trenchShot) {
+      shooter.setTargetShooterRPMTolerance(50);// 10);//5);
+      shooter.setHoodSetpoint(-1565);// -1575);//1500//-1350); //-1475);
       shooter.setTargetShooterRPM(3700); // 3800 //5200);
       shooter.prepareShooter();
-      //targetShooterRPM = 3600;
+      // targetShooterRPM = 3600;
     }
 
-    if(HumanInput.farShot){
-      shooter.setTargetShooterRPMTolerance(50);//5);//10);
-      shooter.setHoodSetpoint(-1620);//1550//-1350); //-1475);
-      shooter.setTargetShooterRPM(3900);//3800);//3700); // 3800 //5200);
+    if (HumanInput.farShot) {
+      shooter.setTargetShooterRPMTolerance(50);// 5);//10);
+      shooter.setHoodSetpoint(-1620);// 1550//-1350); //-1475);
+      shooter.setTargetShooterRPM(3900);// 3800);//3700); // 3800 //5200);
       shooter.prepareShooter();
       // shooter.setHoodSetpoint(-1350);//-1450);
       // shooter.setTargetShooterRPM(3700);//4400);
       // shooter.prepareShooter();
-      //targetShooterRPM = 4400;
+      // targetShooterRPM = 4400;
     }
 
     SmartDashboard.putNumber("Target Shooter RPM:", shooter.getTargetShooterRPM());
 
- 
     if (HumanInput.hoodUp) {
-      shooter.setHoodSetpoint(shooter.getHoodSetpoint()+25);//hood.set(ControlMode.PercentOutput, -0.1);
-  } else if (HumanInput.hoodDown) {
-      shooter.setHoodSetpoint(shooter.getHoodSetpoint()-25);//hood.set(ControlMode.PercentOutput, 0.1);
-  } else if (HumanInput.hoodUpReleased || HumanInput.hoodDownReleased){
-      //hood.set(ControlMode.PercentOutput, 0);
-      //hoodSetpoint = hoodEncoder;
-  } 
-
-
+      shooter.setHoodSetpoint(shooter.getHoodSetpoint() + 25);// hood.set(ControlMode.PercentOutput, -0.1);
+    } else if (HumanInput.hoodDown) {
+      shooter.setHoodSetpoint(shooter.getHoodSetpoint() - 25);// hood.set(ControlMode.PercentOutput, 0.1);
+    } else if (HumanInput.hoodUpReleased || HumanInput.hoodDownReleased) {
+      // hood.set(ControlMode.PercentOutput, 0);
+      // hoodSetpoint = hoodEncoder;
+    }
 
     if (HumanInput.ballChaseButton) {
       mP.currentState = DriveController.DriveState.BALLCHASE;
     } else if (HumanInput.shooterAllInTarget) {
-      // shooterRPMTolerance = SmartDashboard.getNumber("Shooter RPM Tolerance Desired", 0);
-      //queuingBeltSpeed = SmartDashboard.getNumber("Queuing Belt Speed", 0.5);
+      // shooterRPMTolerance = SmartDashboard.getNumber("Shooter RPM Tolerance
+      // Desired", 0);
+      // queuingBeltSpeed = SmartDashboard.getNumber("Queuing Belt Speed", 0.5);
       useGyro = false;
       gyroTolerance = SmartDashboard.getNumber("Gyro Tolerance", 3);
       angleOffset = portalTapeTargetTable.getEntry("X Angle").getDouble(0);
       portalTapeTargetTable.getEntry("gyro").setDouble(Robot.rawGyro);
       angleOffset += Robot.rawGyro;
       gyroAngleDesired = angleOffset;
-      
+
       shooter.autoCounter = 5;
-      shooter.shootAll(/*targetShooterRPM, shooterRPMTolerance, */queuingBeltSpeed, useGyro, gyroAngleDesired,
+      shooter.shootAll(/* targetShooterRPM, shooterRPMTolerance, */queuingBeltSpeed, useGyro, gyroAngleDesired,
           gyroTolerance);
     } else if (HumanInput.trenchRunAlignment) {
       mP.currentState = DriveController.DriveState.TRENCHRUNALIGNMENT;
-    } else if(HumanInput.powerPortAlignment){
+    } else if (HumanInput.powerPortAlignment) {
       mP.currentState = DriveController.DriveState.POWERPORTALIGNMENT;
       // mP.currentState = DriveController.DriveState.SHOOTERPOWERPORTALIGNMENT;
     } else if (HumanInput.climbAlignmentButton) {
@@ -360,35 +352,35 @@ public class Robot extends MyRobot {
       mP.currentState = DriveController.DriveState.GYROLOCK;
     } else if (HumanInput.controlPanelAlignment) {
       trenchAlignment.activate();
-    // Commented due to lag issue
-    // } else if (HumanInput.activateAuto) {
-    //   SmartDashboard.putString("In active Auto", "Yes");
+      // Commented due to lag issue
+      // } else if (HumanInput.activateAuto) {
+      // SmartDashboard.putString("In active Auto", "Yes");
 
-    //   if(auto1 != null){
-    //     auto1.activate();
-    //   }
+      // if(auto1 != null){
+      // auto1.activate();
+      // }
 
-    //   if(auto1 != null){
-    //     auto1.update(mP);
-    //   }
+      // if(auto1 != null){
+      // auto1.update(mP);
+      // }
 
-    // } else if (HumanInput.shutDownAuto) {
-    //   SmartDashboard.putString("In Active Auto", "No");
-    //   mP.currentState = DriveController.DriveState.NONE;
+      // } else if (HumanInput.shutDownAuto) {
+      // SmartDashboard.putString("In Active Auto", "No");
+      // mP.currentState = DriveController.DriveState.NONE;
 
-    //   if(auto1 != null){
-    //     auto1.reset();
-    //   }
-    } else if(HumanInput.abortIntake){
+      // if(auto1 != null){
+      // auto1.reset();
+      // }
+    } else if (HumanInput.abortIntake) {
       shooter.abortIntake();
-    } else if(HumanInput.lightRing){
+    } else if (HumanInput.lightRing) {
       toggleLightRing = !toggleLightRing;
       Solenoids.targettingLightRing(toggleLightRing);
     } else {
       mP.currentState = DriveController.DriveState.MANUAL;
     }
 
-    mP.forward = -HumanInput.forward;//HumanInput.forward;
+    mP.forward = -HumanInput.forward;// HumanInput.forward;
     mP.turn = HumanInput.turn;
 
     mP.driverCameraToggle = HumanInput.driverCameraChange;
@@ -401,24 +393,24 @@ public class Robot extends MyRobot {
         // mP.forward *= 1;
       } else {
         driverCamNum = 0;
-      } 
+      }
 
       Robot.ntInst.getEntry("chooseCam").setNumber(driverCamNum);
-      //Robot.ntInst.getEntry("PumpkinSwitch").setNumber(1);
+      // Robot.ntInst.getEntry("PumpkinSwitch").setNumber(1);
     }
 
     // if (!isForward) {
-    //   mP.forward *= -1;
-    // } 
+    // mP.forward *= -1;
+    // }
 
     if (HumanInput.operatorCameraChange) {
 
       if (operatorCamNum == 0) {
-          operatorCamNum = 1;
+        operatorCamNum = 1;
         // mP.forward *= 1;
       } else {
         operatorCamNum = 0;
-      } 
+      }
 
       Robot.ntInst.getEntry("PumpkinSwitch").setNumber(operatorCamNum);
       // Robot.ntInst.getEntry("PumpkinSwitch").setNumber(1);
@@ -428,92 +420,92 @@ public class Robot extends MyRobot {
 
     // Commented due to lag issue
     // if(auto1 != null){
-    //   auto1.update(mP);
+    // auto1.update(mP);
     // }
 
-    if(HumanInput.activateGroundIntake && !shooter.getShooterStatus()){
+    if (HumanInput.activateGroundIntake && !shooter.getShooterStatus()) {
       shooter.groundIntakeAll();
     }
 
-    if(HumanInput.activateIntake && !shooter.getShooterStatus()){
+    if (HumanInput.activateIntake && !shooter.getShooterStatus()) {
       shooter.intakeAll();
     }
 
     if (hasShooter) {
       shooter.update(mP);
     }
-    if(HumanInput.spinIntake){
+    if (HumanInput.spinIntake) {
       shooter.intake.set(ControlMode.PercentOutput, 1.0);
     }
-    
-    if(HumanInput.reverseIntake){
+
+    if (HumanInput.reverseIntake) {
       shooter.reverseIntake();
-    } else if(HumanInput.reverseIntakeReleased){
+    } else if (HumanInput.reverseIntakeReleased) {
       shooter.reverseIntakeRelease();
     }
 
-    if(HumanInput.reverseAll){
+    if (HumanInput.reverseAll) {
       shooter.reverseAll();
-    } else if(HumanInput.reverseAllReleased){
+    } else if (HumanInput.reverseAllReleased) {
       shooter.reverseAllRelease();
     }
 
     if (HumanInput.reset) {
       shooter.reset();
-      if(auto1 != null){
+      if (auto1 != null) {
         auto1.reset();
       }
     }
 
-    if (HumanInput.gyroReset){
+    if (HumanInput.gyroReset) {
       navx.reset();
     }
 
-    if(HumanInput.CPManipulatorUp){
-      if(HumanInput.fourSpins){
+    if (HumanInput.CPManipulatorUp) {
+      if (HumanInput.fourSpins) {
         controlPanel.spinFourTimes();
       }
 
-    // TODO: revert later - maybe
-    // Commented due to lag issue
+      // TODO: revert later - maybe
+      // Commented due to lag issue
       // if(HumanInput.spinToYellow){
-      //   controlPanel.spinToYellow();
+      // controlPanel.spinToYellow();
       // }
 
       // if(HumanInput.spinToGreen){
-      //   controlPanel.spinToGreen();
+      // controlPanel.spinToGreen();
       // }
 
       // if(HumanInput.spinToBlue){
-      //   controlPanel.spinToBlue();
+      // controlPanel.spinToBlue();
       // }
 
       // if(HumanInput.spinToRed){
-      //   controlPanel.spinToRed();
+      // controlPanel.spinToRed();
       // }
 
       // if(HumanInput.spinToFMSColor){
-      //   controlPanel.spinToFMSColor();
-      // }        
+      // controlPanel.spinToFMSColor();
+      // }
     }
 
     if (hasControlPanel) {
       controlPanel.update();
     }
 
-    if(HumanInput.operatorBack && HumanInput.operatorStart && climber.climbStates == ClimbStates.IDLE){
+    if (HumanInput.operatorBack && HumanInput.operatorStart && climber.climbStates == ClimbStates.IDLE) {
       climber.activate();
     }
 
-    if(HumanInput.abortClimb){
+    if (HumanInput.abortClimb) {
       climber.abortClimb();
     }
 
-    if(HumanInput.abortShooter){
+    if (HumanInput.abortShooter) {
       shooter.abortShooter();
     }
 
-    if(HumanInput.resetEncoderVal){
+    if (HumanInput.resetEncoderVal) {
       driveController.resetEncoderVal();
     }
 
@@ -544,9 +536,8 @@ public class Robot extends MyRobot {
     SmartDashboard.putNumber("Velocity Y: ", navx.getVelocityY());
     SmartDashboard.putNumber("Velocity Z: ", navx.getVelocityZ());
 
-
     displacementX += (navx.getVelocityX());// * 0.02);
-    displacementY += (navx.getVelocityY());// * 0.02); 
+    displacementY += (navx.getVelocityY());// * 0.02);
 
     SmartDashboard.putNumber("X Displacement: ", displacementX);
     SmartDashboard.putNumber("Y Displacement: ", displacementY);
@@ -558,7 +549,7 @@ public class Robot extends MyRobot {
 
     SmartDashboard.putNumber("Teleop Encoder Val", driveController.encoderPos);
 
-    //SmartDashboard.putNumber("Left Motor Current", drivetrain.talon1.get);
+    // SmartDashboard.putNumber("Left Motor Current", drivetrain.talon1.get);
 
   }
 
@@ -594,11 +585,11 @@ public class Robot extends MyRobot {
 
   }
 
-public void LogHeader() {
+  public void LogHeader() {
     Logger.Header("VerticalAngle,");
-}
+  }
 
-public void LogData() {
+  public void LogData() {
     Logger.doubles(vertAngle);
-}
+  }
 }

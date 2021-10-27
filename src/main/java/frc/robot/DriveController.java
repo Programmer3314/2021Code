@@ -20,15 +20,15 @@ public class DriveController {
         public boolean driverCameraToggle = false;
 
         public void LogHeader() {
-            Logger.Header( "forward,turn,angle,distance,currentState,driverCameraToggle,");
+            Logger.Header("forward,turn,angle,distance,currentState,driverCameraToggle,");
         }
-    
+
         public void LogData() {
             Logger.doubles(forward);
             Logger.doubles(turn);
             Logger.doubles(angle);
             Logger.doubles(distance);
-            Logger.singleEnum(currentState); 
+            Logger.singleEnum(currentState);
             Logger.booleans(driverCameraToggle);
 
         }
@@ -79,7 +79,7 @@ public class DriveController {
         trenchTracking.setToleranceValue(Constants.trenchTolerance);
         trenchTracking.setMaxCorrectionValue(Constants.drivetrainTrackingMaxCorrection);
         trenchTracking.setMinCorrectionValue(Constants.drivetrainTrackingMinCorrection);
-    
+
         encoderPos = drivetrain.getEncoderVal();
     }
 
@@ -87,7 +87,6 @@ public class DriveController {
         // scaleForward = 1;
         scaleForward = -1;
         encoderPos = drivetrain.getEncoderVal();
-        
 
         if (mP.currentState != lastDriveState) {
             switch (mP.currentState) {
@@ -117,112 +116,113 @@ public class DriveController {
         distanceToWall = Robot.uSSensor.getDistanceFromWall2();
 
         switch (mP.currentState) {
-        case MANUAL:
-            break;
-        case BALLCHASE:
-            if (ballTargetTable == null)
-                System.out.print("Table is Null");
+            case MANUAL:
+                break;
+            case BALLCHASE:
+                if (ballTargetTable == null)
+                    System.out.print("Table is Null");
 
-            if (ballTargetTable.getEntry("Target Found") == null)
-                System.out.print("Entry is Null");
+                if (ballTargetTable.getEntry("Target Found") == null)
+                    System.out.print("Entry is Null");
 
-            if (ballTargetTable.getEntry("Target Found").getBoolean(false)) {
-                double centerX = ballTargetTable.getEntry("x").getDouble(0);
-                // mP.forward = HumanInput.forward;
-                mP.turn = -ballTracking.calculate(0, centerX * .6/*.8*/);
-            } else {
-                ballTracking.reset();
-            }
+                if (ballTargetTable.getEntry("Target Found").getBoolean(false)) {
+                    double centerX = ballTargetTable.getEntry("x").getDouble(0);
+                    // mP.forward = HumanInput.forward;
+                    mP.turn = -ballTracking.calculate(0, centerX * .6/* .8 */);
+                } else {
+                    ballTracking.reset();
+                }
 
-            // if (ballTargetTable.getEntry("Target Found").getBoolean(false)) {
+                // if (ballTargetTable.getEntry("Target Found").getBoolean(false)) {
 
-            // //double angleOffset = ballTargetTable.getEntry("X Angle").getDouble(0);
-            // ballTargetTable.getEntry("Set Point").setDouble(angleOffset);
-            // ballTargetTable.getEntry("Actual Point").setDouble(Robot.gyro);
-            // forward = HumanInput.forward;
-            // turn = ballTracking.calculate(angleOffset, Robot.gyro);
-            // ballTargetTable.getEntry("PD
-            // turn").setDouble(ballTracking.calculate(angleOffset, Robot.gyro));
-            // }else{
-            // ballTracking.reset();
-            // }
+                // //double angleOffset = ballTargetTable.getEntry("X Angle").getDouble(0);
+                // ballTargetTable.getEntry("Set Point").setDouble(angleOffset);
+                // ballTargetTable.getEntry("Actual Point").setDouble(Robot.gyro);
+                // forward = HumanInput.forward;
+                // turn = ballTracking.calculate(angleOffset, Robot.gyro);
+                // ballTargetTable.getEntry("PD
+                // turn").setDouble(ballTracking.calculate(angleOffset, Robot.gyro));
+                // }else{
+                // ballTracking.reset();
+                // }
 
-            SmartDashboard.putNumber("Turn Output Value", mP.turn);
+                SmartDashboard.putNumber("Turn Output Value", mP.turn);
 
-            break;
-        case POWERPORTALIGNMENT:
-            if (retroTapeTable == null)
-                System.out.print("Retro Tape Table is Null");
+                break;
+            case POWERPORTALIGNMENT:
+                if (retroTapeTable == null)
+                    System.out.print("Retro Tape Table is Null");
 
-            if (retroTapeTable.getEntry("Retroreflective Target Found") == null)
-                System.out.print("Retro Tape Entry is Null");
+                if (retroTapeTable.getEntry("Retroreflective Target Found") == null)
+                    System.out.print("Retro Tape Entry is Null");
 
-            if (retroTapeTable.getEntry("Retroreflective Target Found").getBoolean(false)) {
+                if (retroTapeTable.getEntry("Retroreflective Target Found").getBoolean(false)) {
 
-                // double angleOffset = retroTapeTable.getEntry("X Angle").getDouble(0);
-                retroTapeTable.getEntry("Set Point").setDouble(angleOffset);
-                retroTapeTable.getEntry("Actual Point").setDouble(Robot.rawGyro);
-                // mP.forward = HumanInput.forward;
-                mP.turn = powerPortTracking.calculate(angleOffset, Robot.rawGyro);
-                retroTapeTable.getEntry("PD turn").setDouble(powerPortTracking.calculate(angleOffset, Robot.rawGyro));
-            } else {
-                powerPortTracking.reset();
-            }
+                    // double angleOffset = retroTapeTable.getEntry("X Angle").getDouble(0);
+                    retroTapeTable.getEntry("Set Point").setDouble(angleOffset);
+                    retroTapeTable.getEntry("Actual Point").setDouble(Robot.rawGyro);
+                    // mP.forward = HumanInput.forward;
+                    mP.turn = powerPortTracking.calculate(angleOffset, Robot.rawGyro);
+                    retroTapeTable.getEntry("PD turn")
+                            .setDouble(powerPortTracking.calculate(angleOffset, Robot.rawGyro));
+                } else {
+                    powerPortTracking.reset();
+                }
 
-            SmartDashboard.putNumber("Turn Output Value", mP.turn);
+                SmartDashboard.putNumber("Turn Output Value", mP.turn);
 
-            break;
-        case SHOOTERPOWERPORTALIGNMENT:
-            if (retroTapeTable == null)
-                System.out.print("Retro Tape Table is Null");
+                break;
+            case SHOOTERPOWERPORTALIGNMENT:
+                if (retroTapeTable == null)
+                    System.out.print("Retro Tape Table is Null");
 
-            if (retroTapeTable.getEntry("Retroreflective Target Found") == null){
-                System.out.print("Retro Tape Entry is Null");
-            }
+                if (retroTapeTable.getEntry("Retroreflective Target Found") == null) {
+                    System.out.print("Retro Tape Entry is Null");
+                }
 
-            if (retroTapeTable.getEntry("Retroreflective Target Found").getBoolean(false)) {
-                angleOffset = retroTapeTable.getEntry("X Angle").getDouble(0);
-                retroTapeTable.getEntry("Set Point").setDouble(angleOffset);
-                mP.turn = powerPortTracking.calculate(angleOffset, 0);
-                retroTapeTable.getEntry("PD turn").setDouble(powerPortTracking.calculate(angleOffset, 0));
-            } else {
-                powerPortTracking.reset();
-                mP.turn = 0;
-            }
+                if (retroTapeTable.getEntry("Retroreflective Target Found").getBoolean(false)) {
+                    angleOffset = retroTapeTable.getEntry("X Angle").getDouble(0);
+                    retroTapeTable.getEntry("Set Point").setDouble(angleOffset);
+                    mP.turn = powerPortTracking.calculate(angleOffset, 0);
+                    retroTapeTable.getEntry("PD turn").setDouble(powerPortTracking.calculate(angleOffset, 0));
+                } else {
+                    powerPortTracking.reset();
+                    mP.turn = 0;
+                }
 
-            SmartDashboard.putNumber("Turn Output Value", mP.turn);
-            break;
-        case CLIMBALIGNMENT:
+                SmartDashboard.putNumber("Turn Output Value", mP.turn);
+                break;
+            case CLIMBALIGNMENT:
 
-            break;
-        case TRENCHRUNALIGNMENT:
-            mP.turn = -trenchTracking.calculate(Robot.cleanGyro, mP.angle);
-            break;
-        case GYROLOCK:
-            mP.turn = -trenchTracking.calculate(Robot.cleanGyro, gyroLockAngle);
-            break;
+                break;
+            case TRENCHRUNALIGNMENT:
+                mP.turn = -trenchTracking.calculate(Robot.cleanGyro, mP.angle);
+                break;
+            case GYROLOCK:
+                mP.turn = -trenchTracking.calculate(Robot.cleanGyro, gyroLockAngle);
+                break;
 
-        case CONTROLPANELALIGNMENT:
-            if (distanceToWall > 29) {
-                mP.forward = -0.05;//0.05;
-                mP.turn = 0;
-            } else if (distanceToWall < 27) {
-                mP.forward = 0.05;//-0.05;
-                mP.turn = 0;
-            } else {
+            case CONTROLPANELALIGNMENT:
+                if (distanceToWall > 29) {
+                    mP.forward = -0.05;// 0.05;
+                    mP.turn = 0;
+                } else if (distanceToWall < 27) {
+                    mP.forward = 0.05;// -0.05;
+                    mP.turn = 0;
+                } else {
+                    mP.forward = 0;
+                    mP.turn = -trenchTracking.calculate(Robot.cleanGyro, 0);
+                }
+                break;
+
+            case TURN_TO_GYRO:
+                mP.turn = gyroTracking.calculate(mP.angle, Robot.cleanGyro);
+                break;
+
+            case NONE:
                 mP.forward = 0;
-                mP.turn = -trenchTracking.calculate(Robot.cleanGyro, 0);
-            }
-            break;
-
-        case TURN_TO_GYRO:
-            mP.turn = gyroTracking.calculate(mP.angle, Robot.cleanGyro);
-            break;
-
-        case NONE:
-            mP.forward = 0;
-            mP.turn = 0;
-            break;
+                mP.turn = 0;
+                break;
         }
 
         retroTapeTable.getEntry("Turn Value").setDouble(mP.turn);
@@ -231,32 +231,32 @@ public class DriveController {
         SmartDashboard.putNumber("Set Gyro Value", gyroLockAngle);
         SmartDashboard.putString("Drive State", mP.currentState.toString());
         SmartDashboard.putNumber("Drive Encoder Value", encoderPos);
-        
 
         double leftSetPoint = (mP.forward * scaleForward - mP.turn * scaleTurn);
         double rightSetPoint = (mP.forward * scaleForward + mP.turn * scaleTurn);
 
         lastDriveState = mP.currentState;
 
-        if(HumanInput.buttonBox1.getRawButton(2)){
+        if (HumanInput.buttonBox1.getRawButton(2)) {
             leftSetPoint = 0;
         }
 
-        if(HumanInput.buttonBox1.getRawButton(3)){
+        if (HumanInput.buttonBox1.getRawButton(3)) {
             rightSetPoint = 0;
         }
 
         drivetrain.update(leftSetPoint, rightSetPoint);
-        
+
     }
 
-    public void resetEncoderVal(){
+    public void resetEncoderVal() {
         drivetrain.resetEncoderVal();
-        encoderPos = 0  ;
+        encoderPos = 0;
     }
 
     public void LogHeader() {
-        Logger.Header("scaleForward,scaleTurn,distanceToWall,angleOffset,cleanGyro,gyroDiff,gyroLockAngle,encoderPos,VerticalAngle,");
+        Logger.Header(
+                "scaleForward,scaleTurn,distanceToWall,angleOffset,cleanGyro,gyroDiff,gyroLockAngle,encoderPos,VerticalAngle,");
     }
 
     public void LogData() {
@@ -266,7 +266,7 @@ public class DriveController {
         Logger.doubles(angleOffset);
         Logger.doubles(Robot.cleanGyro);
         Logger.doubles(Math.abs(angleOffset - Robot.cleanGyro));
-        Logger.doubles(gyroLockAngle); 
+        Logger.doubles(gyroLockAngle);
         Logger.doubles(encoderPos);
     }
 }

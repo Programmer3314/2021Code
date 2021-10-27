@@ -69,37 +69,37 @@ public class ControlPanel {
 
     // TODO: review change
     // Only get DriverState instance once in AllRobots
-    // And only check for FMSColor if we have never gotten it 
+    // And only check for FMSColor if we have never gotten it
     // and only about once a second.
     // gameData = DriverStation.getInstance().getGameSpecificMessage();
 
     FMSColorThrottle++;
-    if( (FMSColorThrottle % 50) == 0) {
+    if ((FMSColorThrottle % 50) == 0) {
       if (FMSColor == "") {
         gameData = Robot.driverStation.getGameSpecificMessage();
 
         if (gameData.length() > 0) {
           switch (gameData.charAt(0)) {
-          case 'B':
-            FMSColor = "Blue";
-            wantedColor = "Red";
-            FMSDestinationColor = 0;
-            break;
-          case 'G':
-            FMSColor = "Green";
-            wantedColor = "Yellow";
-            FMSDestinationColor = 3;
-            break;
-          case 'R':
-            FMSColor = "Red";
-            wantedColor = "Blue";
-            FMSDestinationColor = 2;
-            break;
-          case 'Y':
-            FMSColor = "Yellow";
-            wantedColor = "Green";
-            FMSDestinationColor = 1;
-            break;
+            case 'B':
+              FMSColor = "Blue";
+              wantedColor = "Red";
+              FMSDestinationColor = 0;
+              break;
+            case 'G':
+              FMSColor = "Green";
+              wantedColor = "Yellow";
+              FMSDestinationColor = 3;
+              break;
+            case 'R':
+              FMSColor = "Red";
+              wantedColor = "Blue";
+              FMSDestinationColor = 2;
+              break;
+            case 'Y':
+              FMSColor = "Yellow";
+              wantedColor = "Green";
+              FMSDestinationColor = 1;
+              break;
           }
         }
       }
@@ -137,81 +137,81 @@ public class ControlPanel {
 
     nextState = currentState;
     switch (currentState) {
-    case IDLE:
-      desiredColor = "null";
-      destinationColor = -1;
-      break;
+      case IDLE:
+        desiredColor = "null";
+        destinationColor = -1;
+        break;
 
-    case START:
-      // if (HumanInput.operatorController.getRawButton(1)) {
-      // desiredColor = "Yellow";
-      // destinationColor = 3;
-      // } else if (HumanInput.operatorController.getRawButton(2)) {
-      // desiredColor = "Blue";
-      // destinationColor = 2;
-      // } else if (HumanInput.operatorController.getRawButton(3)) {
-      // desiredColor = "Red";
-      // destinationColor = 0;
-      // } else if (HumanInput.operatorController.getRawButton(4)) {
-      // desiredColor = "Green";
-      // destinationColor = 1;
-      // } else {
-      // desiredColor = "null";
-      // destinationColor = -1;
-      // }
+      case START:
+        // if (HumanInput.operatorController.getRawButton(1)) {
+        // desiredColor = "Yellow";
+        // destinationColor = 3;
+        // } else if (HumanInput.operatorController.getRawButton(2)) {
+        // desiredColor = "Blue";
+        // destinationColor = 2;
+        // } else if (HumanInput.operatorController.getRawButton(3)) {
+        // desiredColor = "Red";
+        // destinationColor = 0;
+        // } else if (HumanInput.operatorController.getRawButton(4)) {
+        // desiredColor = "Green";
+        // destinationColor = 1;
+        // } else {
+        // desiredColor = "null";
+        // destinationColor = -1;
+        // }
 
-      // if (!colorString.equalsIgnoreCase(desiredColor) &&
-      // !desiredColor.equalsIgnoreCase("null")) {
-      // talon31.set(ControlMode.PercentOutput, 0.3);
-      // } else {
-      // talon31.set(ControlMode.PercentOutput, 0.0);
-      // }
-      talon31.set(ControlMode.PercentOutput, 0.0);
-      if (currentColor >= 0 && destinationColor >= 0) {
-        scale = colorTable[destinationColor][currentColor];
-        if (scale == 0) {
-          nextState = SetColor.DONE;
-        } else {
-          nextState = SetColor.SPINTOCOLOR;
-          if (scale > 0) {
-            tickMax = 2800;
+        // if (!colorString.equalsIgnoreCase(desiredColor) &&
+        // !desiredColor.equalsIgnoreCase("null")) {
+        // talon31.set(ControlMode.PercentOutput, 0.3);
+        // } else {
+        // talon31.set(ControlMode.PercentOutput, 0.0);
+        // }
+        talon31.set(ControlMode.PercentOutput, 0.0);
+        if (currentColor >= 0 && destinationColor >= 0) {
+          scale = colorTable[destinationColor][currentColor];
+          if (scale == 0) {
+            nextState = SetColor.DONE;
           } else {
-            tickMax = 3500;
+            nextState = SetColor.SPINTOCOLOR;
+            if (scale > 0) {
+              tickMax = 2800;
+            } else {
+              tickMax = 3500;
+            }
           }
         }
-      }
-      break;
+        break;
 
-    case SPINTOCOLOR:
-      talon31.set(ControlMode.PercentOutput, (0.30) * Math.signum(scale));
-      if (!(colorString.equalsIgnoreCase(desiredColor))) {
-        colorCounter = 0;
-      } else {
-        colorCounter++;
-      }
-      if (colorCounter >= 5) {
+      case SPINTOCOLOR:
+        talon31.set(ControlMode.PercentOutput, (0.30) * Math.signum(scale));
+        if (!(colorString.equalsIgnoreCase(desiredColor))) {
+          colorCounter = 0;
+        } else {
+          colorCounter++;
+        }
+        if (colorCounter >= 5) {
+          talon31.setSelectedSensorPosition(0);
+          nextState = SetColor.SPININCOLOR;
+        }
+
+        break;
+
+      case SPININCOLOR:
+        talon31.set(ControlMode.PercentOutput, (0.15) * Math.signum(scale));
+        if ((Math.abs(talon31.getSelectedSensorPosition()) <= tickMax)) {
+
+        } else {
+          nextState = SetColor.DONE;
+        }
+
+        break;
+
+      case DONE:
+        talon31.set(ControlMode.PercentOutput, 0.0);
+        destinationColor = -1;
         talon31.setSelectedSensorPosition(0);
-        nextState = SetColor.SPININCOLOR;
-      }
-
-      break;
-
-    case SPININCOLOR:
-      talon31.set(ControlMode.PercentOutput, (0.15) * Math.signum(scale));
-      if ((Math.abs(talon31.getSelectedSensorPosition()) <= tickMax)) {
-
-      } else {
-        nextState = SetColor.DONE;
-      }
-
-      break;
-
-    case DONE:
-      talon31.set(ControlMode.PercentOutput, 0.0);
-      destinationColor = -1;
-      talon31.setSelectedSensorPosition(0);
-      nextState = SetColor.IDLE;
-      break;
+        nextState = SetColor.IDLE;
+        break;
     }
 
     // Rotation four times

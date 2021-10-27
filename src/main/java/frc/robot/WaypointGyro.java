@@ -7,7 +7,7 @@ public class WaypointGyro extends Waypoint {
     public double turn;
     public int gyroAngle;
 
-    public WaypointGyro(double forward, double turn, int gyroAngle){
+    public WaypointGyro(double forward, double turn, int gyroAngle) {
         this.forward = forward * scale;
         this.turn = turn * scale;
         this.gyroAngle = gyroAngle;
@@ -21,16 +21,14 @@ public class WaypointGyro extends Waypoint {
 
     @Override
     public boolean isComplete() {
-        return ((forward >= 0 && turn >= 0 && gyroAngle <= Robot.rawGyro) //Robot.cleanGyro)
-        || (forward >= 0 && turn < 0 && gyroAngle >= Robot.rawGyro) //Robot.cleanGyro)
-        || (forward < 0 && turn >= 0 && gyroAngle <= Robot.rawGyro) //Robot.cleanGyro)
-        || (forward < 0 && turn < 0 && gyroAngle >= Robot.rawGyro)); //Robot.cleanGyro));
+        return ((forward >= 0 && turn >= 0 && gyroAngle <= Robot.rawGyro) // Robot.cleanGyro)
+                || (forward >= 0 && turn < 0 && gyroAngle >= Robot.rawGyro) // Robot.cleanGyro)
+                || (forward < 0 && turn >= 0 && gyroAngle <= Robot.rawGyro) // Robot.cleanGyro)
+                || (forward < 0 && turn < 0 && gyroAngle >= Robot.rawGyro)); // Robot.cleanGyro));
     }
 
     @Override
     public void init() {
-        // TODO Auto-generated method stub
-
     }
 
 }

@@ -19,11 +19,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * Add your docs here.
  */
-public class DrivetrainFalcon implements IDriveTrain{
+public class DrivetrainFalcon implements IDriveTrain {
     public TalonFX talon1, talon2, talon3, talon4;
-    
-    
-    public DrivetrainFalcon(int topLeft, int bottomLeft, int topRight, int bottomRight){
+
+    public DrivetrainFalcon(int topLeft, int bottomLeft, int topRight, int bottomRight) {
         talon1 = new TalonFX(topLeft);
         talon2 = new TalonFX(bottomLeft);
         talon3 = new TalonFX(topRight);
@@ -43,17 +42,18 @@ public class DrivetrainFalcon implements IDriveTrain{
         // for safety... let's be explicit
         talon2.setInverted(TalonFXInvertType.FollowMaster);
         talon4.setInverted(TalonFXInvertType.FollowMaster);
-
     }
 
-    public void setMotors(TalonFX fx){
+    public void setMotors(TalonFX fx) {
         TalonFXConfiguration fxconfig = new TalonFXConfiguration();
 
         fx.configFactoryDefault();
         fx.getAllConfigs(fxconfig);
         fxconfig.closedloopRamp = 0.1; // seconds to go from 0 to full in closed loop
-        // fxconfig.motionAcceleration = (int) (1000.0 * 2048 / 60.0 / 10); // raw sensor units per 100 ms
-        // fxconfig.motionCruiseVelocity = (int) (3000.0 * 2048 / 60.0 / 10); // raw sensor units per 100 ms
+        // fxconfig.motionAcceleration = (int) (1000.0 * 2048 / 60.0 / 10); // raw
+        // sensor units per 100 ms
+        // fxconfig.motionCruiseVelocity = (int) (3000.0 * 2048 / 60.0 / 10); // raw
+        // sensor units per 100 ms
         // fxconfig.motionCurveStrength = 0; // 0=>Trapezoidal, 1-8 for S-Curve
         // fxconfig.motionProfileTrajectoryPeriod = 50; // ms
         fxconfig.nominalOutputForward = 0; // minimum forward output
@@ -64,39 +64,40 @@ public class DrivetrainFalcon implements IDriveTrain{
 
         SupplyCurrentLimitConfiguration supplyLimit = new SupplyCurrentLimitConfiguration(true, 23.1, 25, 1.4);
         fxconfig.supplyCurrLimit = supplyLimit;
-        //StatorCurrentLimitConfiguration statorLimit = new StatorCurrentLimitConfiguration(true, 12.1, 87.4, 0.4);
-        //fxconfig.statorCurrLimit = statorLimit;
+        // StatorCurrentLimitConfiguration statorLimit = new
+        // StatorCurrentLimitConfiguration(true, 12.1, 87.4, 0.4);
+        // fxconfig.statorCurrLimit = statorLimit;
 
-        fxconfig.slot0.kP = Constants.drivetrainKP;//5.000000; //
+        fxconfig.slot0.kP = Constants.drivetrainKP;// 5.000000; //
         fxconfig.slot0.kI = Constants.drivetrainKI; //
-        fxconfig.slot0.kD = Constants.drivetrainKD;//0.020000; //
+        fxconfig.slot0.kD = Constants.drivetrainKD;// 0.020000; //
         fxconfig.slot0.kF = Constants.drivetrainKFF; //
-        //fxconfig.slot0.integralZone = Constants.drivetrainKIz; //
+        // fxconfig.slot0.integralZone = Constants.drivetrainKIz; //
         fxconfig.slot0.allowableClosedloopError = 217; //
-        //fxconfig.slot0.maxIntegralAccumulator = 254.000000; //
-        fxconfig.slot0.closedLoopPeakOutput = Constants.falconDrivetrainKMaxOutput; //    
+        // fxconfig.slot0.maxIntegralAccumulator = 254.000000; //
+        fxconfig.slot0.closedLoopPeakOutput = Constants.falconDrivetrainKMaxOutput; //
 
         fx.configAllSettings(fxconfig);
     }
 
-
-    // The "maxSpeed" for the falcons should be 
+    // The "maxSpeed" for the falcons should be
     // calculated as follows:
-    // (from docs:  https://github.com/CrossTheRoadElec/Phoenix-Documentation/blob/master/source/ch14_MCSensor.rst#sensor-resolution)
-    // maxSpeed = (kMaxRPM  / 600) * (kSensorUnitsPerRotation / kGearRatio)
+    // (from docs:
+    // https://github.com/CrossTheRoadElec/Phoenix-Documentation/blob/master/source/ch14_MCSensor.rst#sensor-resolution)
+    // maxSpeed = (kMaxRPM / 600) * (kSensorUnitsPerRotation / kGearRatio)
     // where:
-    //  kMaxRPM is the free speed of the Falocon (6380)
-    //  kSensorUnitsPerRotation = 2048 
-    //  kGearRatio = 1 
-    //      This is the ratio of any gears between the motor and the sensor.
-    //      Since the sensor is internal to the motor there are no gears separating 
-    //      the sensor and the motor. 
-    // Please adjust the below and test. 
-    // 
+    // kMaxRPM is the free speed of the Falocon (6380)
+    // kSensorUnitsPerRotation = 2048
+    // kGearRatio = 1
+    // This is the ratio of any gears between the motor and the sensor.
+    // Since the sensor is internal to the motor there are no gears separating
+    // the sensor and the motor.
+    // Please adjust the below and test.
+    //
     @Override
     public void update(double leftSetPoint, double rightSetPoint) {
         double maxSetpoint = Math.max(leftSetPoint, rightSetPoint);
-        if(maxSetpoint > 1){
+        if (maxSetpoint > 1) {
             leftSetPoint /= maxSetpoint;
             rightSetPoint /= maxSetpoint;
         }
@@ -104,15 +105,14 @@ public class DrivetrainFalcon implements IDriveTrain{
         SmartDashboard.putNumber("Right Set Point", rightSetPoint);
         SmartDashboard.putNumber("Velocity of Left", talon1.getSelectedSensorVelocity());
         SmartDashboard.putNumber("Velocity of Right", talon3.getSelectedSensorVelocity());
-        //  talon1.set(TalonFXControlMode.PercentOutput, leftSetPoint);
-        //  talon3.set(TalonFXControlMode.PercentOutput, rightSetPoint);
+        // talon1.set(TalonFXControlMode.PercentOutput, leftSetPoint);
+        // talon3.set(TalonFXControlMode.PercentOutput, rightSetPoint);
         talon1.set(TalonFXControlMode.Velocity, leftSetPoint * 18000);
         talon3.set(TalonFXControlMode.Velocity, rightSetPoint * 18000);
-        
     }
-    
+
     @Override
-    public double getEncoderVal(){
+    public double getEncoderVal() {
         return talon1.getSelectedSensorPosition();
     }
 
