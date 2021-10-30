@@ -78,8 +78,8 @@ public class ThreeBallAutoNoAim implements AutoStateMachines{
             break;
 
             case START:
-                shooter.setHoodSetpoint(-1400);
-                shooter.setTargetShooterRPM(3600);
+                shooter.setHoodSetpoint(-1360);
+                shooter.setTargetShooterRPM(3314);
                 //targetShooterRPM = 3600;
 
                 Robot.shooter.autoCounter = 3;
@@ -117,7 +117,7 @@ public class ThreeBallAutoNoAim implements AutoStateMachines{
                 // mP.angle = angleOffset;
                 // mP.currentState = DriveState.TURN_TO_GYRO;
 
-                mP.currentState = DriveState.POWERPORTALIGNMENT;
+                mP.currentState = DriveState.NONE;
 
                 if(Robot.shooter.getShooterStatus() == false){
                     autoStates = AutoStates.TURN_TO_GYRO;

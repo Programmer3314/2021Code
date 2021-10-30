@@ -78,8 +78,8 @@ public class ThreeBallAuto implements AutoStateMachines{
             break;
 
             case START:
-                shooter.setHoodSetpoint(-1400);
-                shooter.setTargetShooterRPM(3600);
+                shooter.setHoodSetpoint(-1360);
+                shooter.setTargetShooterRPM(3314);
                 //targetShooterRPM = 3600;
 
                 Robot.shooter.autoCounter = 3;
