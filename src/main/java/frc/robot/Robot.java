@@ -79,6 +79,9 @@ public class Robot extends MyRobot {
 
     // set auto
     auto1 = null;
+    if (HumanInput.autoNumber == 2) {
+      auto1 = new ThreeBallAutoNoAim(shooter);
+    }
     if (HumanInput.autoNumber == 3) {
       auto1 = new ThreeBallAuto(shooter);
     }
