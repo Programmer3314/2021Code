@@ -203,6 +203,17 @@ public abstract class MyRobot extends AllRobots {
         SmartDashboard.putNumber("Right Motor 2 Current", pdp.getCurrent(15));
     }
 
+    @Override
+    public void MyDisabledInit() {
+        RechargeDisabledInit();
+    }
+  
+    @Override
+    public void MyDisabledPeriodic() {
+        RechargeDisabledPeriodic();
+    }
+  
+
     public abstract void RechargeRobotInit();
 
     public abstract void RechargeAutonomousInit();
@@ -216,4 +227,8 @@ public abstract class MyRobot extends AllRobots {
     public abstract void RechargeTestInit();
 
     public abstract void RechargeTestPeriodic();
+
+    public abstract void RechargeDisabledInit();
+
+    public abstract void RechargeDisabledPeriodic();
 }

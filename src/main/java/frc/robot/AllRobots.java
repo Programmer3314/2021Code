@@ -64,8 +64,14 @@ public abstract class AllRobots extends TimedRobot {
     }
 
     @Override
+    public void disabledInit() {
+        MyDisabledInit();
+    }
+
+    @Override
     public void disabledPeriodic() {
         Logger.CloseLog();
+        MyDisabledPeriodic();
     }
 
     public abstract void MyRobotInit();
@@ -75,4 +81,6 @@ public abstract class AllRobots extends TimedRobot {
     public abstract void MyTeleopPeriodic();
     public abstract void MyTestInit();
     public abstract void MyTestPeriodic();
+    public abstract void MyDisabledInit();
+    public abstract void MyDisabledPeriodic();
 }

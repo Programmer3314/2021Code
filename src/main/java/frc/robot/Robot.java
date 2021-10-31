@@ -595,4 +595,15 @@ public class Robot extends MyRobot {
   public void LogData() {
     Logger.doubles(vertAngle);
   }
+
+  @Override
+  public void RechargeDisabledInit() {
+  }
+
+  @Override
+  public void RechargeDisabledPeriodic() {
+    SmartDashboard.putBoolean("Joysticks OK", HumanInput.CheckJoysticks());
+  }
+
+
 }

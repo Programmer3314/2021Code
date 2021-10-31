@@ -231,4 +231,11 @@ public class HumanInput {
 
     }
 
+	public static boolean CheckJoysticks() {
+        return buttonBox1.isConnected() 
+            && buttonBox2.isConnected() 
+            && driverController.isConnected() 
+            && operatorController.isConnected();
+	}
+
 }
